@@ -64,6 +64,29 @@ function initPage() {
            });
 
 
+           // Get 5 day forecast for this city
+           let cityID = response.data.id;
+           let forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID + "&appid=" + APIKey;
+           axios.get(forecastQueryURL)
+               .then(function (response) {
+                   fivedayEl.classList.remove("d-none");
+                   
+                   //  Parse response to display forecast for next 5 days
+                   const forecastEls = document.querySelectorAll(".forecast");
+                   for (i = 0; i < forecastEls.length; i++) {
+                       forecastEls[i].innerHTML = "";
+                       const forecastIndex = i * 8 + 4;
+                       const forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
+                       const forecastDay = forecastDate.getDate();
+                       const forecastMonth = forecastDate.getMonth() + 1;
+                       const forecastYear = forecastDate.getFullYear();
+                       const forecastDateEl = document.createElement("p");
+                       forecastDateEl.setAttribute("class", "mt-3 mb-0 forecast-date");
+                       forecastDateEl.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear;
+                       forecastEls[i].append(forecastDateEl);
+
+
+
       var weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=imperial`;
 
       fetch(weatherURL)
