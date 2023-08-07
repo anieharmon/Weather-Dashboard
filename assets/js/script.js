@@ -12,27 +12,17 @@ function initPage() {
   var fivedayEl = document.getElementById("fiveday-header");
   var todayweatherEl = document.getElementById("today-weather");
   let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+}
 
 
+  const APIKey = "84b79da5e5d7c92085660485702f4ce8";
 
 
+  function getWeather(cityName) {
+    // Execute a current weather get request from open weather api
+    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
+    axios.get(queryURL)
 
-var APIkey = "ca8a4b5bb8437ce7eecf312b97caa478"
-
-
-
-function getApi(requestUrl) {
-  fetch(requestUrl)
-    .then(function (response) {
-      console.log(response);
-      if (response.status === 200) {
-        console.log("slay");
-      }
-      return response.json();
-    }).then(function (data) {
-      console.log(data);
-      var lat = data[0].lat;
-      var lon = data[0].lon;
 
       var weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=imperial`;
 
