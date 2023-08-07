@@ -39,6 +39,30 @@ function initPage() {
       currentHumidityEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
       currentWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " MPH";
 
+       // Get UV Index
+       let lat = response.data.coord.lat;
+       let lon = response.data.coord.lon;
+       let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey + "&cnt=1";
+       axios.get(UVQueryURL)
+           .then(function (response) {
+               let UVIndex = document.createElement("span");
+               
+               // When UV Index is good, shows green, when ok shows yellow, when bad shows red
+               if (response.data[0].value < 4 ) {
+                   UVIndex.setAttribute("class", "badge badge-success");
+               }
+               else if (response.data[0].value < 8) {
+                   UVIndex.setAttribute("class", "badge badge-warning");
+               }
+               else {
+                   UVIndex.setAttribute("class", "badge badge-danger");
+               }
+               console.log(response.data[0].value)
+               UVIndex.innerHTML = response.data[0].value;
+               currentUVEl.innerHTML = "UV Index: ";
+               currentUVEl.append(UVIndex);
+           });
+
 
       var weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=imperial`;
 
